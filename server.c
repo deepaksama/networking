@@ -50,7 +50,6 @@ long write_file_from_udp_socket(int sockfd, struct sockaddr_in addr, char *filen
         n = recvfrom(sockfd, buffer, SIZE, 0, (struct sockaddr *)&addr, &addr_size);
         if (1 == is_end_command(buffer))
         {
-            printf("Received END of file \n");
             break;
         }
 
@@ -85,7 +84,6 @@ long write_files_from_tcp_socket(int sockfd, char *filename)
         }
         if (n > 0 && 1 == is_end_command(buffer))
         {
-            printf("Received END of file \n");
             break;
         }
 
@@ -170,7 +168,6 @@ void *close_socket(void *args)
 
 void handle_tcp_connection(struct sockaddr_in server_addr, int sockfd)
 {
-    printf("In TCP handler");
     int newsockfd = tcp_connect(server_addr, sockfd);
 
     char buffer[SIZE];
@@ -181,7 +178,6 @@ void handle_tcp_connection(struct sockaddr_in server_addr, int sockfd)
     for (int i = 0; i < number_of_files; i++)
     {
         sprintf(filename, "received/file_%d.jpg", i);
-        printf("Receiving file %s", filename);
         bytes_received += write_files_from_tcp_socket(newsockfd, filename);
     }
 
@@ -263,7 +259,6 @@ int main(int argc, char const *argv[])
         {
             if (i == tcp_socket)
             {
-                printf("Test");
                 handle_tcp_connection(tcp_server_addr, tcp_socket);
             }
 
